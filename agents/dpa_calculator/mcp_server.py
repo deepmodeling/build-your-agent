@@ -212,7 +212,7 @@ def build_structure(
 @mcp.tool()
 def optimize_crystal_structure( 
     input_structure: Path,
-    model_path: Path = Path,
+    model_path: Path,
     force_tolerance: float = 0.01, 
     max_iterations: int = 100, 
 ) -> OptimizationResult:
@@ -281,7 +281,7 @@ def optimize_crystal_structure(
 @mcp.tool()
 def calculate_phonon(
     cif_file: Path,
-    model_path: Path = Path,
+    model_path: Path,
     supercell_matrix: list[int] = [3,3,3],
     displacement_distance: float = 0.005,
     temperatures: tuple = (300,),
