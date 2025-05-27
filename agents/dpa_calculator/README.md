@@ -61,18 +61,6 @@ Available tools:
 
 ## Usage
 
-### Running the MCP Server
-
-Start the calculation server:
-```bash
-python mcp_server.py
-```
-W
-The server provides these endpoints:
-- `http://localhost:50001/sse` - SSE endpoint for agent communication
-- Tool-specific endpoints for direct API access
-
-
 ### Running the Agent
 
 Start the interactive agent:

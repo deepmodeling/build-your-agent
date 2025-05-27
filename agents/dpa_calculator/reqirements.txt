@@ -1,14 +1,6 @@
 nest_asyncio
 python-dotenv
 numpy
-seekpath
-ase
-deepmd-kit==3.1.0a
-phonopy
-pymatgen
 google-adk
 science-agent-sdk
-dpdispatcher
-jsonpickle
-psutil
-lbg
+litellm

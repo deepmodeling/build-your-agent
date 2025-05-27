@@ -75,7 +75,8 @@ class DPACalculatorAgent:
             instruction=(
                 "You are an expert in materials science and computational chemistry. "
                 "Help users perform Deep Potential calculations including structure optimization, molecular dynamics and property calculations. "
-                "Always verify detinput parameters to users and provide clear explanations of results."
+                "Use default parameters if the users do not mention, but let users confirm them before submission. "
+                "Always verify the input parameters to users and provide clear explanations of results."
             ),
             tools=[*mcp_tools],
         )
