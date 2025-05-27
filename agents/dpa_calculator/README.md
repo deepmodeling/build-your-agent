@@ -87,31 +87,59 @@ python agent.py
 🚀 Starting calculations with DPA model...
 🧑 User: Build a bulk crystal structure for Gold (Au) with an FCC crystal structure and a lattice constant a of 4.08 Å; Then optimize this structure and calculate the phonon spectra with the optimized structures. Use default parameters if I did not mention, but 
 let me confirm them before submission.
-🤖 Agent: Let's go through the parameters for building the bulk crystal structure and then I'll outline the steps for optimization and phonon calculation:
+🤖 Agent: Let's proceed step by step:
 
-### Building the Bulk Crystal Structure:
-- **Material**: Gold (Au)
-- **Crystal Structure**: FCC (Face-Centered Cubic)
-- **Lattice Constant a**: 4.08 Å
-- **Conventional**: True (using the conventional standard cell)
-- **Output File**: default is 'structure.cif'
+1. **Build the Bulk Crystal Structure**:
+   - Material: Gold (Au)
+   - Crystal Structure: FCC
+   - Lattice Constant \(a\): 4.08 Å
 
-### Structure Optimization:
-- **Model Path**: Default (DPA-2.4-7M)
-- **Force Tolerance**: 0.01 eV/Å (default)
-- **Max Iterations**: 100 steps (default)
+2. **Optimize the Structure**:
+   - Input Structure File: Will be based on the generated structure for Gold
+   - Model Path: Default to "bohrium://13756/27666/store/upload/d7af9d6c-ae70-40b5-a85b-1a62269946b8/dpa-2.4-7M.pt"
+   - Force Tolerance: Default 0.01 eV/Å
+   - Maximum Iterations: Default 100 steps
 
-### Phonon Calculation:
-- **Supercell Matrix**: Default [3,3,3]
-- **Displacement Distance**: 0.005 Å (default)
-- **Plot Path**: 'phonon_band.png' (default)
+3. **Calculate Phonon Spectra**:
+   - CIF File: Will use the optimized structure from the previous step
+   - Model Path: Default to "bohrium://13756/27666/store/upload/d7af9d6c-ae70-40b5-a85b-1a62269946b8/dpa-2.4-7M.pt"
+   - Supercell Matrix: Default [3,3,3]
+   - Displacement Distance: Default 0.005 Å
+   - Plot Path: Default "phonon_band.png"
 
-Please confirm these parameters, and once you agree, I will proceed with the calculations.
-🧑 User: Continue.
+Please verify if all these parameters are acceptable or if you'd like to adjust any before I proceed.
+🧑 User: yes
 ```
 
 Then the agent will execute the calculations and provide the results.
+```
+🤖 Agent: Here's the completed workflow for the Gold (Au) FCC structure:
 
+### 1. Built Crystal Structure
+   - **Structure File**: [Structure CIF File](bohrium://13756/27666/store/26c43b894b97d2772ba3f079b969f6ada6b527fd/outputs/structure_file/structure.cif)
+
+### 2. Optimization of Structure
+   - **Optimized Structure**: [Optimized CIF File](bohrium://13756/27666/store/a63618b9e0ac1c814a7dc63966c7a22d9007aa65/outputs/optimized_structure/structure_optimized.cif)
+   - **Optimization Trajectory**: [Trajectory File](bohrium://13756/27666/store/a63618b9e0ac1c814a7dc63966c7a22d9007aa65/outputs/optimization_traj/structure_optimization_traj.extxyz)
+   - **Final Energy**: \(-12.67\) eV
+   - **Message**: Successfully completed in 0 steps
+
+### 3. Phonon Spectra Calculation
+   - **Phonon Entropy**: 197.89 J/mol·K
+   - **Helmholtz Free Energy**: \(-28.94\) kJ/mol
+   - **Heat Capacity at Constant Volume**: 98.13 J/mol·K
+   - **Maximum Phonon Frequency**: 4.47 THz (214.52 K)
+   - **Band Structure Plot**: [Phonon Band Plot](bohrium://13756/27666/store/199687e0ec4c0809b2cd32716bf56be123e64e36/outputs/band_plot/phonon_band.png)
+   - **Band Data (YAML)**: [Band YAML](bohrium://13756/27666/store/199687e0ec4c0809b2cd32716bf56be123e64e36/outputs/band_yaml/phonon_band_band.yaml)
+   - **Band Data (DAT)**: [Band DAT File](bohrium://199687e0ec4c0809b2cd32716bf56be123e64e36/outputs/band_dat)
+
+If you have any questions or need further assistance, feel free to ask!
+```
+
+If you want to change the parameters, you can prompt the user to change them. For example:
+```
+🧑 User: I want the Force Tolerance to be 0.05
+```
 
 
 

@@ -10,7 +10,7 @@ from google.adk.agents import LlmAgent
 from google.adk.models.lite_llm import LiteLlm
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
-from google.adk.tools.mcp_tool.mcp_toolset import SseServerParams
+from google.adk.tools.mcp_tool.mcp_toolset import SseServerParams, MCPToolset
 from google.genai import types
 
 load_dotenv()
@@ -35,7 +35,10 @@ BOHRIUM_EXECUTOR = {
         }
     }
 }
-BOHRIUM_STORAGE  = {
+LOCAL_EXECUTOR = {
+    "type": "local"
+}
+BOHRIUM_STORAGE = {
     "type": "bohrium",
     "username": os.getenv("BOHRIUM_EMAIL"),
     "password": os.getenv("BOHRIUM_PASSWORD"),
@@ -56,9 +59,14 @@ class DPACalculatorAgent:
             connection_params=SseServerParams(
                 url=self.server_url,  
             ),
-            executor=BOHRIUM_EXECUTOR,  
             storage=BOHRIUM_STORAGE,    
         ).get_tools()
+        print(f"✅ MCP tools initialized successfully. {[t.name for t in mcp_tools]}")
+        for tool in mcp_tools:
+            if tool.name == "build_structure":
+                tool.executor = LOCAL_EXECUTOR
+            else:
+                tool.executor = BOHRIUM_EXECUTOR    
         # Create the agent
         self.agent = LlmAgent(
             model=LiteLlm(model="azure/gpt-4o"),
@@ -116,9 +124,8 @@ class DPACalculatorAgent:
             }
         }
 
-
 async def main():
-    agent = DPACalculatorAgent(server_url="http://<remote-machine-url>:50001/sse")
+    agent = DPACalculatorAgent(server_url="http://kqti1328990.bohrium.tech:50001/sse")
     await agent.initialize()
     
     
