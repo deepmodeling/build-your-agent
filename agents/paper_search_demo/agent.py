@@ -10,12 +10,16 @@ from google.adk.tools import FunctionTool
 from typing import Any, Dict
 import openai
 
+# Set environment variables if needed
 
+#use deepseek
+os.environ['DEEPSEEK_API_KEY'] = ""
+
+#use gpt-4o
 os.environ["AZURE_OPENAI_ENDPOINT"] = ""
 os.environ["AZURE_OPENAI_API_KEY"] = ""
 os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"] = ""
 
-from google.adk.agents import LlmAgent
 
 # Configure SSE params
 sse_params = SseServerParams(
@@ -28,9 +32,18 @@ toolset = MCPToolset(
     ),
 )
 
+
+use_model = "deepseek"
+
+if use_model == "deepseek":
+    model = LiteLlm(model="deepseek/deepseek-chat")
+if use_model == "gpt-4o":
+    model = LiteLlm(model="azure/gpt-4o")
+
+# Create agent
 root_agent = Agent(
     name="mcp_sse_agent",
-    model=LiteLlm(model="azure/gpt-4o"),
+    model=model,
     instruction="You are an intelligent assistant capable of using external tools via MCP.",
-    tools=[toolset]
+    tools=[]
 )
