@@ -12,10 +12,10 @@ import openai
 
 # Set environment variables if needed
 
-#use deepseek
+#Use deepseek
 os.environ['DEEPSEEK_API_KEY'] = ""
 
-#use gpt-4o
+#Use gpt-4o
 os.environ["AZURE_OPENAI_ENDPOINT"] = ""
 os.environ["AZURE_OPENAI_API_KEY"] = ""
 os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"] = ""
