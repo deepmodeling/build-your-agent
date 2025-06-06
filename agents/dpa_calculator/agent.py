@@ -47,8 +47,7 @@ BOHRIUM_STORAGE = {
 }
 
 
-server_url = "http://kqti1328990.bohrium.tech:50001/sse"
-session_service = InMemorySessionService()
+server_url = "http://<remote-machine-url>:<port>/sse"
 
 # Initialize MCP tools and agent
 mcp_tools = CalculationMCPToolset(
