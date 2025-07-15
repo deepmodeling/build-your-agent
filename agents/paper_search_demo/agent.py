@@ -2,7 +2,7 @@ import os
 import asyncio
 from google.adk.agents import Agent
 from google.adk.models.lite_llm import LiteLlm
-from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset, SseServerParams
+from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset
 from google.adk.tools.mcp_tool.mcp_session_manager import SseServerParams
 from google.adk.runners import InMemoryRunner
 from google.adk.sessions import InMemorySessionService
