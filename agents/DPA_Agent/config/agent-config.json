@@ -1,0 +1,51 @@
+{
+  "agent": {
+    "name": "DPA Calculators",
+    "description": "",
+    "welcomeMessage": "Start your simulation by starting a conversation.",
+    "module": "DPA_subagent.subagent",
+    "rootAgent": "rootagent"
+  },
+  "ui": {
+    "title": "DPA Calculators",
+    "theme": {
+      "primaryColor": "blue",
+      "secondaryColor": "purple"
+    },
+    "features": {
+      "showFileExplorer": true,
+      "showSessionList": true,
+      "enableFileUpload": false
+    }
+  },
+  "files": {
+    "outputDirectory": "output",
+    "watchDirectories": ["output"],
+    "fileExtensions": {
+      "supported": ["json", "md", "txt", "csv", "py", "js", "ts", "log"],
+      "defaultViewer": {
+        "json": "code",
+        "md": "markdown",
+        "csv": "table",
+        "default": "code"
+      }
+    }
+  },
+  "websocket": {
+    "host": "localhost",
+    "port": 8000,
+    "reconnectInterval": 3000,
+    "maxReconnectAttempts": 10
+  },
+  "session": {
+    "persistent": false,
+    "maxSessions": 50,
+    "defaultSessionTitle": "新对话"
+  },
+  "tools": {
+    "displayNames": {
+    },
+    "longRunningTools": [
+    ]
+  }
+}
