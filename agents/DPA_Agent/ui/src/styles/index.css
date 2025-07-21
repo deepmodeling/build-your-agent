@@ -1,0 +1,436 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import './animations.css';
+
+/* Apple-style custom styles */
+@layer base {
+  body {
+    @apply text-gray-900 bg-gray-50 dark:text-gray-100 dark:bg-gray-900;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-medium tracking-tight;
+  }
+
+  ::selection {
+    @apply bg-blue-500/20 text-blue-600 dark:bg-blue-400/20 dark:text-blue-400;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 dark:bg-gray-600 rounded-full;
+    transition: background-color 0.3s;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400 dark:bg-gray-500;
+  }
+}
+
+@layer components {
+  /* Glass effect */
+  .glass {
+    @apply bg-white/70 backdrop-blur-xl backdrop-saturate-150 border border-apple-gray-200/50;
+  }
+
+  /* Button styles */
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center gap-2;
+  }
+
+  .btn-primary {
+    @apply bg-apple-blue text-white hover:bg-apple-blue/90 active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply bg-apple-gray-100 text-apple-gray-700 hover:bg-apple-gray-200 active:scale-95;
+  }
+
+  .btn-ghost {
+    @apply text-apple-gray-600 hover:bg-apple-gray-100 active:scale-95;
+  }
+
+  /* Card styles */
+  .card {
+    @apply bg-white rounded-2xl shadow-sm border border-apple-gray-200/50 p-6 transition-all duration-300;
+  }
+
+  .card:hover {
+    @apply shadow-md transform -translate-y-0.5;
+  }
+
+  /* Input styles */
+  .input {
+    @apply w-full px-4 py-3 rounded-lg bg-apple-gray-100 border border-transparent focus:border-apple-blue focus:bg-white focus:outline-none transition-all duration-200;
+  }
+
+  /* Badge styles */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-success {
+    @apply bg-apple-green/10 text-apple-green;
+  }
+
+  .badge-warning {
+    @apply bg-apple-yellow/10 text-apple-yellow;
+  }
+
+  .badge-error {
+    @apply bg-apple-red/10 text-apple-red;
+  }
+
+  .badge-info {
+    @apply bg-apple-blue/10 text-apple-blue;
+  }
+
+  /* Sidebar navigation */
+  .nav-item {
+    @apply flex items-center gap-3 px-4 py-2.5 rounded-lg text-apple-gray-600 hover:bg-apple-gray-100 transition-all duration-200;
+  }
+
+  .nav-item.active {
+    @apply bg-apple-blue/10 text-apple-blue font-medium;
+  }
+
+  /* Code block styles */
+  .code-block {
+    @apply bg-apple-gray-900 text-apple-gray-100 rounded-lg p-4 overflow-x-auto;
+  }
+
+  /* Animation utilities */
+  .animate-in {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  .fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+}
+
+/* Prose overrides for better dark mode support */
+.prose {
+  @apply text-gray-900 dark:text-gray-100;
+}
+
+/* Tool result styling */
+.prose pre {
+  @apply whitespace-pre-wrap break-words;
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  @apply text-gray-900 dark:text-gray-100;
+}
+
+.prose p, .prose li {
+  @apply text-gray-700 dark:text-gray-300;
+}
+
+.prose strong {
+  @apply text-gray-900 dark:text-gray-100;
+}
+
+.prose code {
+  @apply bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-1.5 py-0.5 rounded text-sm;
+}
+
+.prose pre {
+  @apply bg-gray-900 dark:bg-black;
+}
+
+.prose pre code {
+  @apply bg-transparent text-gray-100;
+}
+
+.prose blockquote {
+  @apply border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400;
+}
+
+.prose a {
+  @apply text-blue-600 dark:text-blue-400;
+}
+
+.prose th {
+  @apply text-gray-900 dark:text-gray-100;
+}
+
+.prose td {
+  @apply text-gray-700 dark:text-gray-300;
+}
+
+/* Terminal Styles */
+.terminal {
+  font-family: 'Monaco', 'Consolas', 'Courier New', monospace;
+}
+
+.terminal-container {
+  @apply bg-gray-900 text-gray-100;
+}
+
+.terminal-header {
+  @apply bg-gray-800 border-b border-gray-700;
+}
+
+.terminal-output {
+  @apply bg-gray-900 text-gray-300;
+  font-family: 'Monaco', 'Consolas', 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.terminal-input {
+  @apply bg-transparent text-gray-100;
+  font-family: 'Monaco', 'Consolas', 'Courier New', monospace;
+  font-size: 13px;
+}
+
+.terminal-command {
+  @apply text-green-400;
+}
+
+.terminal-error {
+  @apply text-red-400;
+}
+
+.terminal-output pre {
+  @apply whitespace-pre-wrap break-words;
+}
+
+/* Terminal scrollbar */
+.terminal-output::-webkit-scrollbar {
+  width: 8px;
+}
+
+.terminal-output::-webkit-scrollbar-track {
+  @apply bg-gray-800;
+}
+
+.terminal-output::-webkit-scrollbar-thumb {
+  @apply bg-gray-600 rounded;
+}
+
+.terminal-output::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500;
+}
+
+/* Resizable Panel Styles */
+.resize-handle {
+  @apply relative transition-all duration-200;
+}
+
+.resize-handle::before {
+  content: '';
+  @apply absolute inset-0;
+}
+
+.resize-handle-horizontal {
+  @apply cursor-col-resize;
+}
+
+.resize-handle-horizontal::before {
+  @apply -left-1 -right-1;
+}
+
+.resize-handle-vertical {
+  @apply cursor-row-resize;
+}
+
+.resize-handle-vertical::before {
+  @apply -top-1 -bottom-1;
+}
+
+.resize-handle:hover {
+  @apply bg-blue-500;
+}
+
+.resize-handle.resizing {
+  @apply bg-blue-500;
+}
+
+/* Resize cursor overrides during drag */
+body.resizing-horizontal {
+  cursor: col-resize !important;
+}
+
+body.resizing-vertical {
+  cursor: row-resize !important;
+}
+
+body.resizing * {
+  cursor: inherit !important;
+}
+
+/* Prevent text selection during resize */
+body.no-select {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+}
+
+/* Smooth transitions for resizable panels */
+.resizable-transition {
+  transition: width 0.1s ease-out, height 0.1s ease-out;
+}
+
+/* Visual feedback for resize areas */
+.resize-area-active {
+  @apply bg-blue-500/10 border-blue-500;
+}
+
+/* File tree resize handle */
+.file-tree-resize-handle {
+  @apply absolute top-0 right-0 w-1 h-full cursor-col-resize transition-colors;
+  background: transparent;
+}
+
+.file-tree-resize-handle:hover {
+  @apply bg-blue-500;
+}
+
+.file-tree-resize-handle::before {
+  content: '';
+  @apply absolute inset-0 -left-1 -right-1;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Enhanced Glass and Light Effects */
+.glass-premium {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 8px 32px 0 rgba(31, 38, 135, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.dark .glass-premium {
+  background: rgba(17, 24, 39, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 8px 32px 0 rgba(0, 0, 0, 0.3),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+/* Glossy surface effect */
+.glass-glossy {
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-glossy::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
+  transform: rotate(45deg);
+  transition: all 0.5s;
+  pointer-events: none;
+}
+
+.glass-glossy:hover::before {
+  animation: glossy-shine 0.5s ease-out;
+}
+
+@keyframes glossy-shine {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+/* Depth shadow */
+.shadow-depth {
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.07),
+    0 2px 4px rgba(0, 0, 0, 0.07),
+    0 4px 8px rgba(0, 0, 0, 0.07),
+    0 8px 16px rgba(0, 0, 0, 0.07),
+    0 16px 32px rgba(0, 0, 0, 0.07),
+    0 32px 64px rgba(0, 0, 0, 0.07);
+}
+
+/* Aurora effect */
+.aurora-bg {
+  position: relative;
+  overflow: hidden;
+}
+
+.aurora-bg::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    rgba(59, 130, 246, 0.1) 0deg,
+    rgba(147, 51, 234, 0.1) 60deg,
+    rgba(236, 72, 153, 0.1) 120deg,
+    rgba(59, 130, 246, 0.1) 360deg
+  );
+  animation: aurora-rotate 20s linear infinite;
+  filter: blur(40px);
+  z-index: -1;
+}
+
+@keyframes aurora-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

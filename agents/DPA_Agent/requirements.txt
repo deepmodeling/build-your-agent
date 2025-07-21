@@ -1,0 +1,26 @@
+# OpenAI and LLM
+openai
+litellm
+google-adk
+google-genai
+
+# Environment and configuration
+python-dotenv
+pydantic
+
+# HTTP and async
+httpx
+aiofiles
+aiohttp
+requests
+
+# WebSocket Server
+fastapi
+uvicorn[standard]
+
+# Type checking and development
+typing-extensions
+httpx[socks]
+
+# Arxiv
+arxiv

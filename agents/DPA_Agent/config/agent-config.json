@@ -1,0 +1,49 @@
+{
+  "agent": {
+    "name": "Agent",
+    "description": "Custom Agent",
+    "welcomeMessage": "Welcome to chat with me",
+    "module": "agent.agent",
+    "rootAgent": "rootagent"
+  },
+  "ui": {
+    "title": "DPA Agent",
+    "theme": {
+      "primaryColor": "blue",
+      "secondaryColor": "green"
+    },
+    "features": {
+      "showFileExplorer": true,
+      "showSessionList": true,
+      "enableFileUpload": false
+    }
+  },
+  "files": {
+    "outputDirectory": "output",
+    "watchDirectories": ["output"],
+    "fileExtensions": {
+      "supported": ["json", "md", "txt", "csv", "py", "js", "ts", "log"],
+      "defaultViewer": {
+        "json": "code",
+        "md": "markdown",
+        "csv": "table",
+        "default": "code"
+      }
+    }
+  },
+  "websocket": {
+    "host": "localhost",
+    "port": 8000,
+    "reconnectInterval": 3000,
+    "maxReconnectAttempts": 10
+  },
+  "session": {
+    "persistent": false,
+    "maxSessions": 50,
+    "defaultSessionTitle": "New Session"
+  },
+  "server": {
+    "port": 50001,
+    "allowedHosts": ["localhost", "127.0.0.1", "0.0.0.0", "*"]
+  }
+}
