@@ -20,6 +20,7 @@ import shlex
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse
+from http.cookies import SimpleCookie
 from starlette.middleware.base import BaseHTTPMiddleware
 import uvicorn
 
@@ -29,9 +30,8 @@ from google.genai import types
 
 # Import configuration
 from config.agent_config import agentconfig
+from agent.agent import create_root_agent
 
-# Get agent from configuration
-rootagent = agentconfig.get_agent()
 
 # 配置日志
 logging.basicConfig(level=logging.INFO)
@@ -112,7 +112,7 @@ app.add_middleware(HostValidationMiddleware)
 
 class ConnectionContext:
     """每个WebSocket连接的独立上下文"""
-    def __init__(self, websocket: WebSocket):
+    def __init__(self, websocket: WebSocket, app_key: str, access_key: str):
         self.websocket = websocket
         self.sessions: Dict[str, Session] = {}
         self.runners: Dict[str, Runner] = {}
@@ -124,6 +124,8 @@ class ConnectionContext:
         }
         # 为每个连接生成唯一的user_id
         self.user_id = f"user_{uuid.uuid4().hex[:8]}"
+        self.access_key = access_key 
+        self.app_key = app_key
 
 class SessionManager:
     def __init__(self):
@@ -157,6 +159,13 @@ class SessionManager:
     async def _init_session_runner(self, context: ConnectionContext, session_id: str):
         """异步初始化会话的runner"""
         try:
+            project_id = int(os.getenv("BOHRIUM_PROJECT_ID", 27666))  # 可改为从配置读
+            # ✅ 使用 context 中的 access_key 和 app_key 动态创建 agent
+            user_agent = create_root_agent(
+                ak=context.access_key, 
+                app_key=context.app_key,
+                project_id=project_id
+            )
             session_service = InMemorySessionService()
             await session_service.create_session(
                 app_name=self.app_name,
@@ -165,19 +174,15 @@ class SessionManager:
             )
             
             runner = Runner(
-                agent=rootagent,
+                agent=user_agent,  # ✅ 使用动态创建的 agent
                 session_service=session_service,
                 app_name=self.app_name
             )
-            
             context.session_services[session_id] = session_service
             context.runners[session_id] = runner
-            
             logger.info(f"Runner 初始化完成: {session_id}")
-            
         except Exception as e:
             logger.error(f"初始化Runner失败: {e}")
-            # 清理失败的会话
             if session_id in context.sessions:
                 del context.sessions[session_id]
             if session_id in context.session_services:
@@ -213,20 +218,18 @@ class SessionManager:
             return True
         return False
     
-    async def connect_client(self, websocket: WebSocket):
+    async def connect_client(self, websocket: WebSocket, app_key: str, access_key: str):
         """连接新客户端"""
         await websocket.accept()
-        
+
         # 为新连接创建独立的上下文
-        context = ConnectionContext(websocket)
+        context = ConnectionContext(websocket, access_key, app_key)
         self.active_connections[websocket] = context
-        
-        logger.info(f"新用户连接: {context.user_id}")
-        
+        logger.info(f"新用户连接: {context.user_id}, AK: {access_key[:4]}...{access_key[-4:]}, AppKey: {app_key}")
+
         # 创建默认会话
         session = await self.create_session(context)
         context.current_session_id = session.id
-            
         # 发送初始会话信息
         await self.send_sessions_list(context)
         
@@ -506,11 +509,59 @@ class SessionManager:
 # 创建全局管理器
 manager = SessionManager()
 
+def get_ak_info_from_headers(headers: list) -> tuple:
+    """从请求头中获取access key和app key"""
+    cookie_header = None
+    for k, v in headers:
+        if k.lower() == b"cookie":  # 使用小写比较，确保兼容性
+            cookie_header = v.decode("utf-8")
+            break
+    
+    access_key = None
+    app_key = None
+    
+    if cookie_header:
+        try:
+            cookie = SimpleCookie()
+            cookie.load(cookie_header)
+            if "appAccessKey" in cookie:
+                access_key = cookie["appAccessKey"].value
+                logger.info(f"从Cookie获取Access Key: {access_key[:4]}...{access_key[-4:]}")
+            if "clientName" in cookie:
+                app_key = cookie["clientName"].value
+                logger.info(f"从Cookie获取App Key: {app_key}")
+        except Exception as e:
+            logger.warning(f"解析Cookie失败: {e}")
+    
+    # 如果没有从Cookie获取到，尝试从Authorization头获取
+    if not access_key:
+        for k, v in headers:
+            if k.lower() == b"authorization":
+                auth_header = v.decode("utf-8")
+                if auth_header.startswith("Bearer "):
+                    access_key = auth_header[7:]
+                    logger.info(f"从Authorization头获取Access Key: {access_key[:4]}...{access_key[-4:]}")
+    
+    if not app_key:
+        app_key = ""
+        logger.info("未在Cookie中找到clientName，使用默认App Key: mat-master")
+    
+    if not access_key:
+        logger.warning("未找到Access Key")
+        return "", app_key
+    
+    return access_key, app_key
+
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     """WebSocket 端点"""
-    await manager.connect_client(websocket)
+    access_key, app_key = get_ak_info_from_headers(websocket.scope.get("headers", []))
+    if not access_key:
+        logger.warning("WebSocket 连接缺少 appAccessKey")
+        await websocket.close(code=1008, reason="Missing appAccessKey")
+        return
     
+    await manager.connect_client(websocket, access_key, app_key)
     # 获取该连接的上下文
     context = manager.active_connections.get(websocket)
     if not context:
