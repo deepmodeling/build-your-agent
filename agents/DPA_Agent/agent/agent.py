@@ -24,48 +24,39 @@ AK = os.getenv("AK")
 BOHRIUM_EXECUTOR_CALC = {
     "type": "dispatcher",
     "machine": {
-        "batch_type": "Bohrium",
-        "context_type": "Bohrium",
+        "batch_type": "OpenAPI",
+        "context_type": "OpenAPI",
         "remote_profile": {
-            "email": os.getenv("BOHRIUM_EMAIL"),
-            "password": os.getenv("BOHRIUM_PASSWORD"),
-            "program_id": int(os.getenv("BOHRIUM_PROJECT_ID")),
-            "input_data": {
-                "image_name": "registry.dp.tech/dptech/dp/native/prod-19853/dpa-mcp:dev-0704",
-                "job_type": "container",
-                "platform": "ali",
-                "scass_type": "1 * NVIDIA V100_32g"
-            }
+            "access_key": os.getenv("AK"),
+            "project_id": int(os.getenv("BOHRIUM_PROJECT_ID")),
+            "image_address": "registry.dp.tech/dptech/dp/native/prod-19853/dpa-mcp:dev-0704",
+            "job_type": "container",
+            "platform": "ali",
+            "machine_type": "1 * NVIDIA V100_32g"
         }
     }
 }
 BOHRIUM_EXECUTOR_TE = {
     "type": "dispatcher",
     "machine": {
-        "batch_type": "Bohrium",
-        "context_type": "Bohrium",
+        "batch_type": "OpenAPI",
+        "context_type": "OpenAPI",
         "remote_profile": {
-            "email": os.getenv("BOHRIUM_EMAIL"),
-            "password": os.getenv("BOHRIUM_PASSWORD"),
-            "program_id": int(os.getenv("BOHRIUM_PROJECT_ID")),
-            "input_data": {
-                "image_name": "registry.dp.tech/dptech/dp/native/prod-435364/agents:0.1.0",
-                "job_type": "container",
-                "platform": "ali",
-                "scass_type": "1 * NVIDIA V100_32g"
-            }
+            "access_key": os.getenv("AK"),
+            "project_id": int(os.getenv("BOHRIUM_PROJECT_ID")),
+            "image_address": "registry.dp.tech/dptech/dp/native/prod-435364/agents:0.1.0",
+            "job_type": "container",
+            "platform": "ali",
+            "machine_type": "1 * NVIDIA V100_32g"
         }
     }
 }
-LOCAL_EXECUTOR = {
-    "type": "local"
-}
+
 HTTPS_STORAGE = {
   "type": "https",
   "plugin": {
         "type": "bohrium",
-        "username": os.getenv("BOHRIUM_EMAIL"),
-        "password": os.getenv("BOHRIUM_PASSWORD"),
+        "access_key": os.getenv("AK"),
         "project_id": int(os.getenv("BOHRIUM_PROJECT_ID"))
     }
 }
@@ -77,9 +68,12 @@ mcp_tools_dpa = CalculationMCPToolset(
     connection_params=SseServerParams(url="https://dpa-uuid1750659890.app-space.dplink.cc/sse?token=a0d87a7abf8d47cb92403018fd4a9468"),
     # connection_params=SseServerParams(url="http://pfmx1355864.bohrium.tech:50002/sse"),
     storage=HTTPS_STORAGE,
-    executor=None,
+    executor=BOHRIUM_EXECUTOR_CALC,
     executor_map={
-        "build_structure": None
+        "build_bulk_structure": None,
+        "build_molecule_structure": None,
+        "build_surface_slab": None,
+        "build_surface_adsorbate": None
     }
 )
 mcp_tools_thermoelectric = CalculationMCPToolset(
