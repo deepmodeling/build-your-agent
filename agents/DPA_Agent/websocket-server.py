@@ -218,12 +218,12 @@ class SessionManager:
             return True
         return False
     
-    async def connect_client(self, websocket: WebSocket, app_key: str, access_key: str):
+    async def connect_client(self, websocket: WebSocket, access_key: str, app_key: str):
         """连接新客户端"""
         await websocket.accept()
 
         # 为新连接创建独立的上下文
-        context = ConnectionContext(websocket, access_key, app_key)
+        context = ConnectionContext(websocket, app_key, access_key)
         self.active_connections[websocket] = context
         logger.info(f"新用户连接: {context.user_id}, AK: {access_key[:4]}...{access_key[-4:]}, AppKey: {app_key}")
 
