@@ -7,13 +7,9 @@ from typing import Any, Dict
 import nest_asyncio
 from dotenv import load_dotenv
 from dp.agent.adapter.adk import CalculationMCPToolset
-from google.adk import Agent
-from google.adk.agents import LlmAgent, SequentialAgent
+from google.adk.agents import LlmAgent
 from google.adk.models.lite_llm import LiteLlm
-from google.adk.runners import Runner
-from google.adk.sessions import InMemorySessionService
 from google.adk.tools.mcp_tool.mcp_session_manager import SseServerParams
-from google.genai import types
 
 # Add the project root to Python path
 project_root = Path(__file__).resolve().parent.parent
@@ -23,6 +19,7 @@ if str(project_root) not in sys.path:
 load_dotenv()
 nest_asyncio.apply()
 
+AK = os.getenv("AK")
 # Global Configuration
 BOHRIUM_EXECUTOR_CALC = {
     "type": "dispatcher",
