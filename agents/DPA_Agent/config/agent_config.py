@@ -53,15 +53,10 @@ class AgentConfig:
     
     def get_agent(self):
         """Dynamically import and return the configured agent"""
-        agentconfig = self.config.get("agent", {})
-        module_name = agentconfig.get("module", "agent.subagent")
-        agentname = agentconfig.get("rootAgent", "rootagent")
-        
-        try:
-            module = importlib.import_module(module_name)
-            return getattr(module, agentname)
-        except (ImportError, AttributeError) as e:
-            raise ImportError(f"Failed to load agent {agentname} from {module_name}: {e}")
+        raise RuntimeError(
+            "Agent 必须在运行时动态创建（需要 access_key），"
+            "请使用 agent.create_agent(ak, project_id) 而不是 config.get_agent()"
+        )
     
     def get_ui_config(self) -> Dict[str, Any]:
         """Get UI-specific configuration"""
